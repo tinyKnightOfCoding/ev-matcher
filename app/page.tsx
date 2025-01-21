@@ -1,13 +1,14 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
+import { Sparkles } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { matchVehicles } from "./actions/matchVehicles"
 
 const DailyUsage = z.enum(["shortCityTrips", "commuting", "mixedUse", "longTrips"])
@@ -30,230 +31,202 @@ const formSchema = z.object({
   chargingOption: ChargingOption,
 })
 
+type FormData = z.infer<typeof formSchema>
+
+const questions: { [K in keyof FormData]: { question: string; options: { value: FormData[K]; label: string }[] } } = {
+  dailyUsage: {
+    question: "What's your typical daily usage?",
+    options: [
+      { value: "shortCityTrips", label: "Short City Trips" },
+      { value: "commuting", label: "Commuting" },
+      { value: "mixedUse", label: "Mixed Use" },
+      { value: "longTrips", label: "Long Trips" },
+    ],
+  },
+  passengers: {
+    question: "How many passengers do you usually carry?",
+    options: [
+      { value: "alone", label: "Alone" },
+      { value: "withOnePerson", label: "With One Person" },
+      { value: "smallFamily", label: "Small Family" },
+      { value: "largeFamily", label: "Large Family" },
+    ],
+  },
+  longDistanceFrequency: {
+    question: "How often do you make long-distance trips?",
+    options: [
+      { value: "never", label: "Never" },
+      { value: "fewTimesPerYear", label: "A Few Times Per Year" },
+      { value: "regularly", label: "Regularly" },
+    ],
+  },
+  luggageSpace: {
+    question: "How much luggage space do you typically need?",
+    options: [
+      { value: "small", label: "Small" },
+      { value: "medium", label: "Medium" },
+      { value: "large", label: "Large" },
+    ],
+  },
+  residence: {
+    question: "Where do you live?",
+    options: [
+      { value: "city", label: "City" },
+      { value: "suburb", label: "Suburb" },
+      { value: "rural", label: "Rural" },
+    ],
+  },
+  ecoPreference: {
+    question: "How important is eco-friendliness to you?",
+    options: [
+      { value: "veryImportant", label: "Very Important" },
+      { value: "somewhatImportant", label: "Somewhat Important" },
+      { value: "notImportant", label: "Not Important" },
+    ],
+  },
+  usageFrequency: {
+    question: "How often do you plan to use the vehicle?",
+    options: [
+      { value: "rarely", label: "Rarely" },
+      { value: "regularly", label: "Regularly" },
+      { value: "daily", label: "Daily" },
+    ],
+  },
+  chargingOption: {
+    question: "What charging options do you have access to?",
+    options: [
+      { value: "privateGarage", label: "Private Garage" },
+      { value: "streetAccess", label: "Street Access" },
+      { value: "noAccess", label: "No Access" },
+    ],
+  },
+}
+
 export default function QuestionnairePage() {
   const router = useRouter()
-  const form = useForm<z.infer<typeof formSchema>>({
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [chatHistory, setChatHistory] = useState<{ question: string; answer: string }[]>([])
+  const [isTyping, setIsTyping] = useState(false)
+
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      dailyUsage: undefined,
-      passengers: undefined,
-      longDistanceFrequency: undefined,
-      luggageSpace: undefined,
-      residence: undefined,
-      ecoPreference: undefined,
-      usageFrequency: undefined,
-      chargingOption: undefined,
-    },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData()
-    Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value)
-    })
+  const questionKeys = Object.keys(questions) as (keyof FormData)[]
+  const currentQuestion = questions[questionKeys[currentQuestionIndex]]
+  const progress = (currentQuestionIndex / questionKeys.length) * 100
 
-    const matchingResults = await matchVehicles(formData)
-    router.push("/results?matches=" + encodeURIComponent(JSON.stringify(matchingResults)))
+  useEffect(() => {
+    setIsTyping(true)
+    const timer = setTimeout(() => {
+      setIsTyping(false)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [currentQuestionIndex])
+
+  const handleAnswer = async (value: string, label: string) => {
+    form.setValue(questionKeys[currentQuestionIndex], value as any)
+    setChatHistory([...chatHistory, { question: currentQuestion.question, answer: label }])
+
+    if (currentQuestionIndex < questionKeys.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1)
+    } else {
+      const formData = new FormData()
+      Object.entries(form.getValues()).forEach(([key, value]) => {
+        formData.append(key, value)
+      })
+
+      const matchingResults = await matchVehicles(formData)
+      router.push("/results?matches=" + encodeURIComponent(JSON.stringify(matchingResults)))
+    }
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Find Your Perfect Electric Vehicle</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="dailyUsage"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>What's your typical daily usage?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select daily usage" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="shortCityTrips">Short City Trips</SelectItem>
-                    <SelectItem value="commuting">Commuting</SelectItem>
-                    <SelectItem value="mixedUse">Mixed Use</SelectItem>
-                    <SelectItem value="longTrips">Long Trips</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>Choose the option that best describes your daily driving habits.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+      <div className="container mx-auto p-4 max-w-2xl">
+        <div className="text-center mb-8 pt-8">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
+            Find Your Perfect EV
+          </h1>
+          <p className="text-muted-foreground">
+            Answer a few questions and let us match you with your ideal electric vehicle
+          </p>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full h-1 bg-secondary mb-8 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-primary"
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5 }}
           />
-          <FormField
-            control={form.control}
-            name="passengers"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>How many passengers do you usually carry?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select passenger count" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="alone">Alone</SelectItem>
-                    <SelectItem value="withOnePerson">With One Person</SelectItem>
-                    <SelectItem value="smallFamily">Small Family</SelectItem>
-                    <SelectItem value="largeFamily">Large Family</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>This helps us recommend vehicles with appropriate seating capacity.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="longDistanceFrequency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>How often do you make long-distance trips?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select long-distance frequency" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="never">Never</SelectItem>
-                    <SelectItem value="fewTimesPerYear">A Few Times Per Year</SelectItem>
-                    <SelectItem value="regularly">Regularly</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>This helps us determine the range requirements for your vehicle.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="luggageSpace"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>How much luggage space do you typically need?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select luggage space" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="small">Small</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="large">Large</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>This helps us recommend vehicles with appropriate cargo capacity.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="residence"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Where do you live?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select residence type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="city">City</SelectItem>
-                    <SelectItem value="suburb">Suburb</SelectItem>
-                    <SelectItem value="rural">Rural</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>Your location can affect the type of EV that's most suitable for you.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="ecoPreference"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>How important is eco-friendliness to you?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select eco preference" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="veryImportant">Very Important</SelectItem>
-                    <SelectItem value="somewhatImportant">Somewhat Important</SelectItem>
-                    <SelectItem value="notImportant">Not Important</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  This helps us prioritize vehicles based on their environmental impact.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="usageFrequency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>How often do you plan to use the vehicle?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select usage frequency" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="rarely">Rarely</SelectItem>
-                    <SelectItem value="regularly">Regularly</SelectItem>
-                    <SelectItem value="daily">Daily</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>This helps us recommend vehicles based on your usage patterns.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="chargingOption"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>What charging options do you have access to?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select charging option" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="privateGarage">Private Garage</SelectItem>
-                    <SelectItem value="streetAccess">Street Access</SelectItem>
-                    <SelectItem value="noAccess">No Access</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  Your charging options can influence the type of EV that's most convenient for you.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Find My Match</Button>
-        </form>
-      </Form>
+        </div>
+
+        <div className="space-y-4">
+          <AnimatePresence mode="popLayout">
+            {chatHistory.map((chat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-2"
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  <div className="bg-primary text-primary-foreground p-3 rounded-lg inline-block">{chat.question}</div>
+                </div>
+                <div className="flex justify-end">
+                  <div className="bg-secondary text-secondary-foreground p-3 rounded-lg inline-block">
+                    {chat.answer}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {currentQuestionIndex < questionKeys.length && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                <div className="bg-primary text-primary-foreground p-3 rounded-lg inline-block">
+                  {isTyping ? (
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-current rounded-full animate-bounce" />
+                      <span className="w-2 h-2 bg-current rounded-full animate-bounce [animation-delay:0.2s]" />
+                      <span className="w-2 h-2 bg-current rounded-full animate-bounce [animation-delay:0.4s]" />
+                    </div>
+                  ) : (
+                    currentQuestion.question
+                  )}
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <AnimatePresence mode="wait">
+                  {!isTyping &&
+                    currentQuestion.options.map((option, index) => (
+                      <motion.div
+                        key={option.value}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                      >
+                        <Button
+                          onClick={() => handleAnswer(option.value, option.label)}
+                          className="w-full justify-start text-left transition-all hover:translate-x-1"
+                          variant="outline"
+                        >
+                          {option.label}
+                        </Button>
+                      </motion.div>
+                    ))}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
