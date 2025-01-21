@@ -3,19 +3,7 @@
 import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import {
-  ArrowLeft,
-  Battery,
-  Gauge,
-  Timer,
-  Weight,
-  Users,
-  Car,
-  Banknote,
-  Zap,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react"
+import { Battery, Gauge, Timer, Weight, Users, Car, Banknote, Zap, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
@@ -71,7 +59,7 @@ function AttributeChart({ attributeScores }: { attributeScores: { [key: string]:
   )
 }
 
-function VehicleCard({ match, index }: { match: any; index: number }) {
+function VehicleCard({ match, index, isHighestMatch }: { match: any; index: number; isHighestMatch: boolean }) {
   const [showMore, setShowMore] = useState(false)
 
   const getTopAttributes = (attributeScores: { [key: string]: number }) => {
@@ -83,7 +71,14 @@ function VehicleCard({ match, index }: { match: any; index: number }) {
 
   return (
     <motion.div variants={item}>
-      <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow">
+      <Card
+        className={`relative overflow-hidden group hover:shadow-lg transition-shadow ${isHighestMatch ? "ring-2 ring-primary" : ""}`}
+      >
+        {isHighestMatch && (
+          <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-2 py-1 text-sm font-semibold">
+            Best Match
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -191,10 +186,20 @@ function Results() {
   const matchesParam = searchParams.get("matches")
   const matches = matchesParam ? JSON.parse(decodeURIComponent(matchesParam)) : []
 
+  // Sort matches by total score in descending order
+  const sortedMatches = [...matches].sort((a, b) => b.totalScore - a.totalScore)
+
+  // Function to reorder matches for desktop layout
+  const reorderMatchesForDesktop = (matches: any[]) => {
+    if (matches.length === 3) {
+      return [matches[1], matches[0], matches[2]]
+    }
+    return matches
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto p-4">
-        {/* Removed Start Over button */}
         <Header
           title="Your Perfect Match"
           subtitle="We've found the best electric vehicles based on your preferences"
@@ -203,11 +208,19 @@ function Results() {
         />
 
         <motion.div initial="hidden" animate="show" variants={container} className="space-y-8">
-          {/* Removed existing header */}
-
           <motion.div variants={container} className="grid gap-6 md:grid-cols-3">
-            {matches.map((match: any, index: number) => (
-              <VehicleCard key={index} match={match} index={index} />
+            {/* Mobile layout */}
+            {sortedMatches.map((match: any, index: number) => (
+              <div key={index} className="md:hidden">
+                <VehicleCard match={match} index={index} isHighestMatch={index === 0} />
+              </div>
+            ))}
+
+            {/* Desktop layout */}
+            {reorderMatchesForDesktop(sortedMatches).map((match: any, index: number) => (
+              <div key={index} className="hidden md:block">
+                <VehicleCard match={match} index={index} isHighestMatch={index === 1} />
+              </div>
             ))}
           </motion.div>
         </motion.div>
