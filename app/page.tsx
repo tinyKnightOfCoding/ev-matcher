@@ -1,25 +1,39 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { useRouter } from "next/navigation"
+import { useState, useEffect, useRef } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
 
-import { ChatHistory } from "@/components/chat-history"
-import { CurrentQuestion } from "@/components/current-question"
-import { ProgressBar } from "@/components/progress-bar"
-import { matchVehicles } from "./actions/matchVehicles"
-import { Header } from "@/components/header"
+import { ChatHistory } from "@/components/chat-history";
+import { CurrentQuestion } from "@/components/current-question";
+import { ProgressBar } from "@/components/progress-bar";
+import { matchVehicles } from "./actions/matchVehicles";
+import { Header } from "@/components/header";
 
-const DailyUsage = z.enum(["shortCityTrips", "commuting", "mixedUse", "longTrips"])
-const Passengers = z.enum(["alone", "withOnePerson", "smallFamily", "largeFamily"])
-const LongDistanceFrequency = z.enum(["never", "fewTimesPerYear", "regularly"])
-const LuggageSpace = z.enum(["small", "medium", "large"])
-const Residence = z.enum(["city", "suburb", "rural"])
-const EcoPreference = z.enum(["veryImportant", "somewhatImportant", "notImportant"])
-const UsageFrequency = z.enum(["rarely", "regularly", "daily"])
-const ChargingOption = z.enum(["privateGarage", "streetAccess", "noAccess"])
+const DailyUsage = z.enum([
+  "shortCityTrips",
+  "commuting",
+  "mixedUse",
+  "longTrips",
+]);
+const Passengers = z.enum([
+  "alone",
+  "withOnePerson",
+  "smallFamily",
+  "largeFamily",
+]);
+const LongDistanceFrequency = z.enum(["never", "fewTimesPerYear", "regularly"]);
+const LuggageSpace = z.enum(["small", "medium", "large"]);
+const Residence = z.enum(["city", "suburb", "rural"]);
+const EcoPreference = z.enum([
+  "veryImportant",
+  "somewhatImportant",
+  "notImportant",
+]);
+const UsageFrequency = z.enum(["rarely", "regularly", "daily"]);
+const ChargingOption = z.enum(["privateGarage", "streetAccess", "noAccess"]);
 
 const formSchema = z.object({
   dailyUsage: DailyUsage,
@@ -30,135 +44,151 @@ const formSchema = z.object({
   ecoPreference: EcoPreference,
   usageFrequency: UsageFrequency,
   chargingOption: ChargingOption,
-})
+});
 
-type FormData = z.infer<typeof formSchema>
-
-const questions: { [K in keyof FormData]: { question: string; options: { value: FormData[K]; label: string }[] } } = {
+type FormData = z.infer<typeof formSchema>;
+const questions: {
+  [K in keyof FormData]: {
+    question: string;
+    options: { value: FormData[K]; label: string }[];
+  };
+} = {
   dailyUsage: {
-    question: "What's your typical daily usage?",
+    question: "Was ist dein typischer Gebrauch?",
     options: [
-      { value: "shortCityTrips", label: "Short City Trips" },
-      { value: "commuting", label: "Commuting" },
-      { value: "mixedUse", label: "Mixed Use" },
-      { value: "longTrips", label: "Long Trips" },
+      { value: "shortCityTrips", label: "Kurze Städtetrips" },
+      { value: "commuting", label: "Pendeln" },
+      { value: "mixedUse", label: "Gemischte Nutzung" },
+      { value: "longTrips", label: "Lange Fahrten" },
     ],
   },
   passengers: {
-    question: "How many passengers do you usually carry?",
+    question: "Wie viele Passagiere beförderst du normalerweise?",
     options: [
-      { value: "alone", label: "Alone" },
-      { value: "withOnePerson", label: "With One Person" },
-      { value: "smallFamily", label: "Small Family" },
-      { value: "largeFamily", label: "Large Family" },
+      { value: "alone", label: "Nur mich" },
+      { value: "withOnePerson", label: "Mich mit einer zusätzlichen Person" },
+      { value: "smallFamily", label: "Kleine Familie" },
+      { value: "largeFamily", label: "Grosse Familie" },
     ],
   },
   longDistanceFrequency: {
-    question: "How often do you make long-distance trips?",
+    question: "Wie oft machst du Fernreisen?",
     options: [
-      { value: "never", label: "Never" },
-      { value: "fewTimesPerYear", label: "A Few Times Per Year" },
-      { value: "regularly", label: "Regularly" },
+      { value: "never", label: "Nie" },
+      { value: "fewTimesPerYear", label: "Ein paar Mal pro Jahr" },
+      { value: "regularly", label: "Regelmässig" },
     ],
   },
   luggageSpace: {
-    question: "How much luggage space do you typically need?",
+    question: "Wie viel Gepäckraum benötigst du normalerweise?",
     options: [
-      { value: "small", label: "Small" },
-      { value: "medium", label: "Medium" },
-      { value: "large", label: "Large" },
+      { value: "small", label: "Klein" },
+      { value: "medium", label: "Mittel" },
+      { value: "large", label: "Gross" },
     ],
   },
   residence: {
-    question: "Where do you live?",
+    question: "Wo wohnst du?",
     options: [
-      { value: "city", label: "City" },
-      { value: "suburb", label: "Suburb" },
-      { value: "rural", label: "Rural" },
+      { value: "city", label: "Stadt" },
+      { value: "suburb", label: "Vorort" },
+      { value: "rural", label: "Ländlich" },
     ],
   },
   ecoPreference: {
-    question: "How important is eco-friendliness to you?",
+    question: "Wie wichtig ist dir Umweltfreundlichkeit?",
     options: [
-      { value: "veryImportant", label: "Very Important" },
-      { value: "somewhatImportant", label: "Somewhat Important" },
-      { value: "notImportant", label: "Not Important" },
+      { value: "veryImportant", label: "Sehr wichtig" },
+      { value: "somewhatImportant", label: "Ziemlich wichtig" },
+      { value: "notImportant", label: "Nicht wichtig" },
     ],
   },
   usageFrequency: {
-    question: "How often do you plan to use the vehicle?",
+    question: "Wie oft benutzt du das Fahrzeug?",
     options: [
-      { value: "rarely", label: "Rarely" },
-      { value: "regularly", label: "Regularly" },
-      { value: "daily", label: "Daily" },
+      { value: "rarely", label: "Selten" },
+      { value: "regularly", label: "Regelmässig" },
+      { value: "daily", label: "Täglich" },
     ],
   },
   chargingOption: {
-    question: "What charging options do you have access to?",
+    question: "Welche Lademöglichkeit steht dir zur Verfügung?",
     options: [
-      { value: "privateGarage", label: "Private Garage" },
-      { value: "streetAccess", label: "Street Access" },
-      { value: "noAccess", label: "No Access" },
+      { value: "privateGarage", label: "In der privaten Garage" },
+      { value: "streetAccess", label: "An der Strasse" },
+      { value: "noAccess", label: "Kein privater Zugang" },
     ],
   },
-}
+};
 
 export default function QuestionnairePage() {
-  const router = useRouter()
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [chatHistory, setChatHistory] = useState<{ question: string; answer: string }[]>([])
-  const [isTyping, setIsTyping] = useState(false)
-  const chatContainerRef = useRef<HTMLDivElement>(null)
+  const router = useRouter();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [chatHistory, setChatHistory] = useState<
+    { question: string; answer: string }[]
+  >([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-  })
+  });
 
-  const questionKeys = Object.keys(questions) as (keyof FormData)[]
-  const currentQuestion = questions[questionKeys[currentQuestionIndex]]
-  const progress = (currentQuestionIndex / questionKeys.length) * 100
+  const questionKeys = Object.keys(questions) as (keyof FormData)[];
+  const currentQuestion = questions[questionKeys[currentQuestionIndex]];
+  const progress = (currentQuestionIndex / questionKeys.length) * 100;
 
   useEffect(() => {
-    setIsTyping(true)
+    setIsTyping(true);
     const timer = setTimeout(() => {
-      setIsTyping(false)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [currentQuestionIndex])
+      setIsTyping(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [currentQuestionIndex]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
-  }, [chatHistory, isTyping])
+  }, [chatHistory, isTyping]);
 
   const handleAnswer = async (value: string, label: string) => {
-    form.setValue(questionKeys[currentQuestionIndex], value as any)
-    setChatHistory([...chatHistory, { question: currentQuestion.question, answer: label }])
+    form.setValue(questionKeys[currentQuestionIndex], value as any);
+    setChatHistory([
+      ...chatHistory,
+      { question: currentQuestion.question, answer: label },
+    ]);
 
     if (currentQuestionIndex < questionKeys.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      const formData = new FormData()
+      const formData = new FormData();
       Object.entries(form.getValues()).forEach(([key, value]) => {
-        formData.append(key, value)
-      })
+        formData.append(key, value);
+      });
 
-      const matchingResults = await matchVehicles(formData)
-      router.push("/results?matches=" + encodeURIComponent(JSON.stringify(matchingResults)))
+      const matchingResults = await matchVehicles(formData);
+      router.push(
+        "/results?matches=" +
+          encodeURIComponent(JSON.stringify(matchingResults)),
+      );
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto p-4 max-w-2xl">
         <Header
-          title="Find Your Perfect EV"
-          subtitle="Answer a few questions and let us match you with your ideal electric vehicle"
+          title="Finde dein perfektes Elektroauto"
+          subtitle="Beantworte einige Fragen und wir finden für dich dein perfektes Elektroauto."
         />
         <ProgressBar progress={progress} />
 
-        <div ref={chatContainerRef} className="space-y-4 max-h-[60vh] overflow-y-auto">
+        <div
+          ref={chatContainerRef}
+          className="space-y-4 max-h-[60vh] overflow-y-auto"
+        >
           <ChatHistory chatHistory={chatHistory} />
 
           {currentQuestionIndex < questionKeys.length && (
@@ -172,6 +202,5 @@ export default function QuestionnairePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
