@@ -169,9 +169,12 @@ export default function QuestionnairePage() {
       });
 
       const matchingResults = await matchVehicles(formData);
+      const userResponses = form.getValues();
       router.push(
         "/results?matches=" +
-          encodeURIComponent(JSON.stringify(matchingResults)),
+          encodeURIComponent(JSON.stringify(matchingResults)) +
+          "&userResponses=" +
+          encodeURIComponent(JSON.stringify(userResponses)),
       );
     }
   };

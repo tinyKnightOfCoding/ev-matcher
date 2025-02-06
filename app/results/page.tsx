@@ -33,6 +33,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Header } from "@/components/header";
+import { LearnMoreDialog } from "@/components/learn-more-dialog";
 
 const container = {
   hidden: { opacity: 0 },
@@ -103,9 +104,11 @@ function AttributeChart({
 function VehicleCard({
   match,
   index,
+  userResponses,
   isHighestMatch,
 }: {
   match: any;
+  userResponses: any;
   index: number;
   isHighestMatch: boolean;
 }) {
@@ -282,9 +285,14 @@ function VehicleCard({
           </AnimatePresence>
         </CardContent>
         <CardFooter>
-          <Button className="w-full group-hover:bg-primary transition-colors">
-            Mehr erfahren
-          </Button>
+          <LearnMoreDialog
+            vehicleModel={`${match.vehicle.description.make} ${match.vehicle.description.model}`}
+            userResponses={userResponses}
+          >
+            <Button className="w-full group-hover:bg-primary transition-colors">
+              Mehr erfahren
+            </Button>
+          </LearnMoreDialog>
         </CardFooter>
       </Card>
     </motion.div>
@@ -295,8 +303,12 @@ function Results() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const matchesParam = searchParams.get("matches");
+  const userResponsesParam = searchParams.get("userResponses");
   const matches = matchesParam
     ? JSON.parse(decodeURIComponent(matchesParam))
+    : [];
+  const userResponses = userResponsesParam
+    ? JSON.parse(decodeURIComponent(userResponsesParam))
     : [];
 
   // Sort matches by total score in descending order
@@ -338,6 +350,7 @@ function Results() {
                 <VehicleCard
                   match={match}
                   index={index}
+                  userResponses={userResponses}
                   isHighestMatch={index === 0}
                 />
               </div>
@@ -350,6 +363,7 @@ function Results() {
                   <VehicleCard
                     match={match}
                     index={index}
+                    userResponses={userResponses}
                     isHighestMatch={index === 1}
                   />
                 </div>

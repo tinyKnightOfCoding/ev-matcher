@@ -816,34 +816,6 @@ const vehicle30: Vehicle = {
   },
 };
 
-const vehicle30: Vehicle = {
-  description: {
-    model: "5 E-Tech 52kWh 150ps",
-    make: "Renault",
-    description:
-      "Renault 5 E-Tech 52kWh 150ps mit einer Reichweite von 320 km und einer Ladegeschwindigkeit von 400 km/h.",
-    imageLinks: [],
-    reviewLinks: [
-      "https://ev-database.org/de/pkw/2135/Renault-5-E-Tech-52kWh-150ps",
-    ],
-  },
-  attributes: {
-    range: 320.0,
-    chargingSpeed: 400.0,
-    price: 32500.0,
-    motorPower: 110.0,
-    weight: 1524.0,
-    efficiency: 163.0,
-    seats: 5,
-    trunkVolume: 326.0,
-    bodyType: "Kompaktwagen",
-    equipment: "Standard",
-    driveType: "Frontantrieb",
-    acceleration: 8.0,
-    dimensions: { length: 3922.0, width: 2020.0, height: 1489.0 },
-  },
-};
-
 const vehicle31: Vehicle = {
   description: {
     model: "Elroq 85",
