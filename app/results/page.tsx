@@ -149,41 +149,41 @@ function VehicleCard({
           <div className="grid grid-cols-2 gap-2">
             <StatCard
               icon={Battery}
-              label="Range"
+              label="Reichweite"
               value={`${match.vehicle.attributes.range} km`}
             />
             <StatCard
               icon={Timer}
-              label="Charging (0-80%)"
-              value={`${match.vehicle.attributes.chargingTime}min`}
+              label="Ladegeschwindigkeit"
+              value={`${match.vehicle.attributes.chargingTime} km/h`}
             />
             <StatCard
               icon={Gauge}
-              label="Efficiency"
+              label="Verbrauch"
               value={`${match.vehicle.attributes.efficiency} kWh/100km`}
             />
             <StatCard
               icon={Weight}
-              label="Weight"
+              label="Gewicht"
               value={`${match.vehicle.attributes.weight}kg`}
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Price</span>
+              <span className="text-muted-foreground">Preis</span>
               <span className="font-medium">
-                €{match.vehicle.attributes.price.toLocaleString()}
+                CHF {match.vehicle.attributes.price.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Acceleration</span>
+              <span className="text-muted-foreground">Beschleunigung</span>
               <span className="font-medium">
                 {match.vehicle.attributes.acceleration}s (0-100 km/h)
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Body Type</span>
+              <span className="text-muted-foreground">Karosserietyp</span>
               <span className="font-medium capitalize">
                 {match.vehicle.attributes.bodyType}
               </span>
@@ -192,7 +192,7 @@ function VehicleCard({
 
           <div>
             <h3 className="text-lg font-semibold mb-2">
-              Top Matching Attributes
+              Wichtigste Übereinstimmungen
             </h3>
             <ul className="space-y-1">
               {getTopAttributes(match.attributeScores).map((attr, i) => (
@@ -235,42 +235,44 @@ function VehicleCard({
                 transition={{ duration: 0.3 }}
                 className="space-y-2"
               >
-                <h3 className="text-lg font-semibold">Additional Attributes</h3>
+                <h3 className="text-lg font-semibold">
+                  Zusätzliche Eigenschaften
+                </h3>
                 <div className="grid grid-cols-2 gap-2">
                   <StatCard
                     icon={Users}
-                    label="Seats"
+                    label="Sitzplätze"
                     value={match.vehicle.attributes.seats.toString()}
                   />
                   <StatCard
                     icon={Zap}
-                    label="Motor Power"
+                    label="Leistung"
                     value={`${match.vehicle.attributes.motorPower} kW`}
                   />
                   <StatCard
                     icon={Car}
-                    label="Drive Type"
+                    label="Antrieb"
                     value={match.vehicle.attributes.driveType}
                   />
                   <StatCard
                     icon={Car}
-                    label="Equipment"
+                    label="Ausrüstung"
                     value={match.vehicle.attributes.equipment}
                   />
                 </div>
                 <div>
-                  <h4 className="font-semibold">Dimensions</h4>
+                  <h4 className="font-semibold">Abmessungen</h4>
                   <div className="grid grid-cols-3 gap-2">
                     <StatCard
-                      label="Length"
+                      label="Länge"
                       value={`${match.vehicle.attributes.dimensions.length} mm`}
                     />
                     <StatCard
-                      label="Width"
+                      label="Breite"
                       value={`${match.vehicle.attributes.dimensions.width} mm`}
                     />
                     <StatCard
-                      label="Height"
+                      label="Höhe"
                       value={`${match.vehicle.attributes.dimensions.height} mm`}
                     />
                   </div>
@@ -281,7 +283,7 @@ function VehicleCard({
         </CardContent>
         <CardFooter>
           <Button className="w-full group-hover:bg-primary transition-colors">
-            Learn More
+            Mehr erfahren
           </Button>
         </CardFooter>
       </Card>
@@ -314,8 +316,8 @@ function Results() {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto p-4">
         <Header
-          title="Your Perfect Match"
-          subtitle="We've found the best electric vehicles based on your preferences"
+          title="Deine perfekte Wahl"
+          subtitle="Wir haben die besten Elektrofahrzeuge für dich gefunden"
           showBackButton
           onBackClick={() => router.push("/")}
         />
