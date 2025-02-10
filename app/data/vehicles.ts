@@ -1,6 +1,7 @@
 import { Vehicle } from "../types/vehicle";
 
 const vehicle1: Vehicle = {
+  index: 1,
   description: {
     model: "A6 Avant e-tron performance",
     make: "Audi",
@@ -29,6 +30,7 @@ const vehicle1: Vehicle = {
 };
 
 const vehicle2: Vehicle = {
+  index: 2,
   description: {
     model: "Q4 e-tron 45",
     make: "Audi",
@@ -55,6 +57,7 @@ const vehicle2: Vehicle = {
 };
 
 const vehicle3: Vehicle = {
+  index: 3,
   description: {
     model: "iX xDrive 40",
     make: "BMW",
@@ -81,6 +84,7 @@ const vehicle3: Vehicle = {
 };
 
 const vehicle4: Vehicle = {
+  index: 4,
   description: {
     model: "i5 eDrive40 Touring",
     make: "BMW",
@@ -109,6 +113,7 @@ const vehicle4: Vehicle = {
 };
 
 const vehicle5: Vehicle = {
+  index: 5,
   description: {
     model: "e-C3",
     make: "Citroen",
@@ -135,6 +140,7 @@ const vehicle5: Vehicle = {
 };
 
 const vehicle6: Vehicle = {
+  index: 6,
   description: {
     model: "Born VZ",
     make: "CUPRA",
@@ -163,6 +169,7 @@ const vehicle6: Vehicle = {
 };
 
 const vehicle7: Vehicle = {
+  index: 7,
   description: {
     model: "Spring Electric 45",
     make: "Dacia",
@@ -191,6 +198,7 @@ const vehicle7: Vehicle = {
 };
 
 const vehicle8: Vehicle = {
+  index: 8,
   description: {
     model: "Grande Panda",
     make: "Fiat",
@@ -217,6 +225,7 @@ const vehicle8: Vehicle = {
 };
 
 const vehicle9: Vehicle = {
+  index: 9,
   description: {
     model: "500 Limousine 42kWh",
     make: "Fiat",
@@ -245,6 +254,7 @@ const vehicle9: Vehicle = {
 };
 
 const vehicle10: Vehicle = {
+  index: 10,
   description: {
     model: "Capri Extended Range AWD",
     make: "Ford",
@@ -273,6 +283,7 @@ const vehicle10: Vehicle = {
 };
 
 const vehicle11: Vehicle = {
+  index: 11,
   description: {
     model: "Explorer Extended Range AWD",
     make: "Ford",
@@ -301,6 +312,7 @@ const vehicle11: Vehicle = {
 };
 
 const vehicle12: Vehicle = {
+  index: 12,
   description: {
     model: "INSTER Long Range",
     make: "Hyundai",
@@ -329,6 +341,7 @@ const vehicle12: Vehicle = {
 };
 
 const vehicle13: Vehicle = {
+  index: 13,
   description: {
     model: "IONIQ 5 84 kWh",
     make: "Hyundai",
@@ -355,6 +368,7 @@ const vehicle13: Vehicle = {
 };
 
 const vehicle14: Vehicle = {
+  index: 14,
   description: {
     model: "e-208",
     make: "Peugeot",
@@ -381,6 +395,7 @@ const vehicle14: Vehicle = {
 };
 
 const vehicle15: Vehicle = {
+  index: 15,
   description: {
     model: "EV3 81.4 kWh",
     make: "Kia",
@@ -407,6 +422,7 @@ const vehicle15: Vehicle = {
 };
 
 const vehicle16: Vehicle = {
+  index: 16,
   description: {
     model: "EV9 99.8 kWh RWD",
     make: "Kia",
@@ -433,6 +449,7 @@ const vehicle16: Vehicle = {
 };
 
 const vehicle17: Vehicle = {
+  index: 17,
   description: {
     model: "T03",
     make: "Leapmotor",
@@ -459,6 +476,7 @@ const vehicle17: Vehicle = {
 };
 
 const vehicle18: Vehicle = {
+  index: 18,
   description: {
     model: "C10",
     make: "Leapmotor",
@@ -485,6 +503,7 @@ const vehicle18: Vehicle = {
 };
 
 const vehicle19: Vehicle = {
+  index: 19,
   description: {
     model: "Air Grand Touring",
     make: "Lucid",
@@ -513,6 +532,7 @@ const vehicle19: Vehicle = {
 };
 
 const vehicle20: Vehicle = {
+  index: 20,
   description: {
     model: "Model Y Long Range",
     make: "Tesla",
@@ -541,6 +561,7 @@ const vehicle20: Vehicle = {
 };
 
 const vehicle21: Vehicle = {
+  index: 21,
   description: {
     model: "EQB 250+",
     make: "Mercedes-Benz",
@@ -569,6 +590,7 @@ const vehicle21: Vehicle = {
 };
 
 const vehicle22: Vehicle = {
+  index: 22,
   description: {
     model: "EQA 250+",
     make: "Mercedes-Benz",
@@ -597,6 +619,7 @@ const vehicle22: Vehicle = {
 };
 
 const vehicle23: Vehicle = {
+  index: 23,
   description: {
     model: "EQS 450+",
     make: "Mercedes-Benz",
@@ -625,6 +648,7 @@ const vehicle23: Vehicle = {
 };
 
 const vehicle24: Vehicle = {
+  index: 24,
   description: {
     model: "MG4 Electric 64 kWh",
     make: "MG",
@@ -651,6 +675,7 @@ const vehicle24: Vehicle = {
 };
 
 const vehicle25: Vehicle = {
+  index: 25,
   description: {
     model: "Electric Cooper SE",
     make: "Mini",
@@ -679,6 +704,7 @@ const vehicle25: Vehicle = {
 };
 
 const vehicle26: Vehicle = {
+  index: 26,
   description: {
     model: "Astra Electric",
     make: "Opel",
@@ -705,6 +731,7 @@ const vehicle26: Vehicle = {
 };
 
 const vehicle27: Vehicle = {
+  index: 27,
   description: {
     model: "e-3008 97 kWh Long Range",
     make: "Peugeot",
@@ -733,6 +760,7 @@ const vehicle27: Vehicle = {
 };
 
 const vehicle28: Vehicle = {
+  index: 28,
   description: {
     model: "4 Long Range Dual Motor",
     make: "Polestar",
@@ -761,6 +789,7 @@ const vehicle28: Vehicle = {
 };
 
 const vehicle29: Vehicle = {
+  index: 29,
   description: {
     model: "2 Long Range Single Motor",
     make: "Polestar",
@@ -789,6 +818,7 @@ const vehicle29: Vehicle = {
 };
 
 const vehicle30: Vehicle = {
+  index: 30,
   description: {
     model: "5 E-Tech 52kWh 150ps",
     make: "Renault",
@@ -817,6 +847,7 @@ const vehicle30: Vehicle = {
 };
 
 const vehicle31: Vehicle = {
+  index: 31,
   description: {
     model: "Elroq 85",
     make: "Skoda",
@@ -843,6 +874,7 @@ const vehicle31: Vehicle = {
 };
 
 const vehicle32: Vehicle = {
+  index: 32,
   description: {
     model: "Enyaq 85",
     make: "Skoda",
@@ -869,6 +901,7 @@ const vehicle32: Vehicle = {
 };
 
 const vehicle33: Vehicle = {
+  index: 33,
   description: {
     model: "Model Y",
     make: "Tesla",
@@ -895,6 +928,7 @@ const vehicle33: Vehicle = {
 };
 
 const vehicle34: Vehicle = {
+  index: 34,
   description: {
     model: "Model 3 Maximale Reichweite",
     make: "Tesla",
@@ -923,6 +957,7 @@ const vehicle34: Vehicle = {
 };
 
 const vehicle35: Vehicle = {
+  index: 35,
   description: {
     model: "ID.7 Pro S",
     make: "Volkswagen",
@@ -949,6 +984,7 @@ const vehicle35: Vehicle = {
 };
 
 const vehicle36: Vehicle = {
+  index: 36,
   description: {
     model: "ID.4 Pro",
     make: "Volkswagen",
@@ -975,6 +1011,7 @@ const vehicle36: Vehicle = {
 };
 
 const vehicle37: Vehicle = {
+  index: 37,
   description: {
     model: "ID.7 Tourer Pro S",
     make: "Volkswagen",
@@ -1003,6 +1040,7 @@ const vehicle37: Vehicle = {
 };
 
 const vehicle38: Vehicle = {
+  index: 38,
   description: {
     model: "ID.3 GTX",
     make: "Volkswagen",
@@ -1029,6 +1067,7 @@ const vehicle38: Vehicle = {
 };
 
 const vehicle39: Vehicle = {
+  index: 39,
   description: {
     model: "EX30 Single Motor ER",
     make: "Volvo",
@@ -1056,6 +1095,7 @@ const vehicle39: Vehicle = {
   },
 };
 const vehicle40: Vehicle = {
+  index: 40,
   description: {
     model: "Voyah Free",
     make: "Voyah",

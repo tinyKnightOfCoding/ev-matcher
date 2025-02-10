@@ -1,14 +1,36 @@
-import { z } from "zod"
+import { z } from "zod";
 
 // UserResponse Schema
-export const DailyUsage = z.enum(["shortCityTrips", "commuting", "mixedUse", "longTrips"])
-export const Passengers = z.enum(["alone", "withOnePerson", "smallFamily", "largeFamily"])
-export const LongDistanceFrequency = z.enum(["never", "fewTimesPerYear", "regularly"])
-export const LuggageSpace = z.enum(["small", "medium", "large"])
-export const Residence = z.enum(["city", "suburb", "rural"])
-export const EcoPreference = z.enum(["veryImportant", "somewhatImportant", "notImportant"])
-export const UsageFrequency = z.enum(["rarely", "regularly", "daily"])
-export const ChargingOption = z.enum(["privateGarage", "streetAccess", "noAccess"])
+export const DailyUsage = z.enum([
+  "shortCityTrips",
+  "commuting",
+  "mixedUse",
+  "longTrips",
+]);
+export const Passengers = z.enum([
+  "alone",
+  "withOnePerson",
+  "smallFamily",
+  "largeFamily",
+]);
+export const LongDistanceFrequency = z.enum([
+  "never",
+  "fewTimesPerYear",
+  "regularly",
+]);
+export const LuggageSpace = z.enum(["small", "medium", "large"]);
+export const Residence = z.enum(["city", "suburb", "rural"]);
+export const EcoPreference = z.enum([
+  "veryImportant",
+  "somewhatImportant",
+  "notImportant",
+]);
+export const UsageFrequency = z.enum(["rarely", "regularly", "daily"]);
+export const ChargingOption = z.enum([
+  "privateGarage",
+  "streetAccess",
+  "noAccess",
+]);
 
 export const UserResponseSchema = z.object({
   dailyUsage: DailyUsage,
@@ -19,7 +41,7 @@ export const UserResponseSchema = z.object({
   ecoPreference: EcoPreference,
   usageFrequency: UsageFrequency,
   chargingOption: ChargingOption,
-})
+});
 
 // VehicleDescription Schema
 export const VehicleDescriptionSchema = z.object({
@@ -28,12 +50,19 @@ export const VehicleDescriptionSchema = z.object({
   description: z.string(),
   imageLinks: z.array(z.string().url()),
   reviewLinks: z.array(z.string().url()),
-})
+});
 
 // VehicleAttributes Schema
-export const BodyType = z.enum(["sedan", "suv", "hatchback", "stationWagon", "coupe", "convertible"])
-export const Equipment = z.enum(["basic", "standard", "premium", "luxury"])
-export const DriveType = z.enum(["frontWheel", "rearWheel", "allWheel"])
+export const BodyType = z.enum([
+  "sedan",
+  "suv",
+  "hatchback",
+  "stationWagon",
+  "coupe",
+  "convertible",
+]);
+export const Equipment = z.enum(["basic", "standard", "premium", "luxury"]);
+export const DriveType = z.enum(["frontWheel", "rearWheel", "allWheel"]);
 
 export const VehicleAttributesSchema = z.object({
   range: z.number(),
@@ -53,13 +82,14 @@ export const VehicleAttributesSchema = z.object({
     width: z.number(),
     height: z.number(),
   }),
-})
+});
 
 // Complete Vehicle Schema
 export const VehicleSchema = z.object({
+  index: z.number(),
   description: VehicleDescriptionSchema,
   attributes: VehicleAttributesSchema,
-})
+});
 
 // MatchingResult Schema
 export const MatchingResultSchema = z.object({
@@ -75,9 +105,8 @@ export const MatchingResultSchema = z.object({
   }),
   totalScore: z.number(),
   vehicle: VehicleSchema,
-})
+});
 
-export type UserResponse = z.infer<typeof UserResponseSchema>
-export type Vehicle = z.infer<typeof VehicleSchema>
-export type MatchingResult = z.infer<typeof MatchingResultSchema>
-
+export type UserResponse = z.infer<typeof UserResponseSchema>;
+export type Vehicle = z.infer<typeof VehicleSchema>;
+export type MatchingResult = z.infer<typeof MatchingResultSchema>;
