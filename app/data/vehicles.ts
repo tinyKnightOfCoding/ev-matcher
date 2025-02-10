@@ -1055,6 +1055,31 @@ const vehicle39: Vehicle = {
     dimensions: { length: 4233.0, width: 2032.0, height: 1549.0 },
   },
 };
+const vehicle40: Vehicle = {
+  description: {
+    model: "Voyah Free",
+    make: "Voyah",
+    description:
+      "Voyah Free mit einer Reichweite von 500 km und einer Ladegeschwindigkeit von 466 km/h.",
+    imageLinks: [],
+    reviewLinks: [],
+  },
+  attributes: {
+    range: 500.0,
+    chargingSpeed: 466.0,
+    price: 69000.0,
+    motorPower: 360.0,
+    weight: 2190.0,
+    efficiency: 155.0,
+    seats: 5,
+    trunkVolume: 560.0,
+    bodyType: "SUV",
+    equipment: "Standard",
+    driveType: "Heckantrieb",
+    acceleration: 4.4,
+    dimensions: { length: 4905.0, width: 1950.0, height: 1645.0 },
+  },
+};
 
 export const vehicles: Vehicle[] = [
   vehicle1,
@@ -1096,4 +1121,5 @@ export const vehicles: Vehicle[] = [
   vehicle37,
   vehicle38,
   vehicle39,
+  vehicle40,
 ];
