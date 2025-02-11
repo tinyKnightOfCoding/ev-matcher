@@ -331,7 +331,7 @@ function Results() {
           title="Deine perfekte Wahl"
           subtitle="Wir haben die besten Elektrofahrzeuge für dich gefunden"
           showBackButton
-          onBackClick={() => router.push("/")}
+          onBackClick={() => router.push("/questions")}
         />
 
         <motion.div
