@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const leadFormSchema = z.object({
+  appointment: z.string(),
   name: z.string().min(1),
   email: z.string().email(),
   telephone: z.string().min(1),
