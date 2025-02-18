@@ -290,7 +290,7 @@ function VehicleCard({
             userResponses={userResponses}
           >
             <Button className="w-full group-hover:bg-primary transition-colors">
-              Mehr erfahren
+              Probefahrt buchen
             </Button>
           </LearnMoreDialog>
         </CardFooter>

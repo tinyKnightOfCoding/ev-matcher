@@ -14,6 +14,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "./ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { formatDate, addDays } from "date-fns";
 
 type LearnMoreDialogProps = PropsWithChildren<{
   vehicleModel: string;
@@ -26,6 +34,7 @@ export function LearnMoreDialog({
   children,
 }: LearnMoreDialogProps) {
   const [formData, setFormData] = useState({
+    appointment: "",
     name: "",
     email: "",
     telephone: "",
@@ -74,15 +83,46 @@ export function LearnMoreDialog({
     },
     [formData, vehicleModel, userResponses],
   );
+  const appointments = [
+    `${formatDate(addDays(new Date(), 1), "dd.MM.yyyy")} 17:30`,
+    `${formatDate(addDays(new Date(), 2), "dd.MM.yyyy")} 18:00`,
+    `${formatDate(addDays(new Date(), 3), "dd.MM.yyyy")} 16:00`,
+    `${formatDate(addDays(new Date(), 4), "dd.MM.yyyy")} 16:15`,
+    `${formatDate(addDays(new Date(), 5), "dd.MM.yyyy")} 17:00`,
+    `${formatDate(addDays(new Date(), 6), "dd.MM.yyyy")} 19:00`,
+  ];
 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" tabIndex={1}>
         <DialogHeader>
-          <DialogTitle>Lern mehr zum {vehicleModel}</DialogTitle>
+          <DialogTitle>Probefahrt anfragen</DialogTitle>
+          <DialogDescription>{vehicleModel}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Termin</Label>
+            <Select
+              name="name"
+              value={formData.appointment}
+              onValueChange={(value) =>
+                setFormData((prev) => ({ ...prev, appointment: value }))
+              }
+              required
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Termin auswählen" />
+              </SelectTrigger>
+              <SelectContent>
+                {appointments.map((appointment) => (
+                  <SelectItem key={appointment} value={appointment}>
+                    {appointment}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
