@@ -406,7 +406,7 @@ const vehicle15: Vehicle = {
   },
   attributes: {
     range: 455.0,
-    chargingSpeed: 570.0,
+    chargingTime: 570.0,
     price: 36950.0,
     motorPower: 150.0,
     weight: 1885.0,
@@ -433,7 +433,7 @@ const vehicle16: Vehicle = {
   },
   attributes: {
     range: 450.0,
-    chargingSpeed: 850.0,
+    chargingTime: 850.0,
     price: 64950.0,
     motorPower: 150.0,
     weight: 2501.0,
@@ -460,7 +460,7 @@ const vehicle17: Vehicle = {
   },
   attributes: {
     range: 230.0,
-    chargingSpeed: 180.0,
+    chargingTime: 180.0,
     price: 16990.0,
     motorPower: 70.0,
     weight: 1175.0,
@@ -487,7 +487,7 @@ const vehicle18: Vehicle = {
   },
   attributes: {
     range: 355.0,
-    chargingSpeed: 330.0,
+    chargingTime: 330.0,
     price: 35900.0,
     motorPower: 160.0,
     weight: 1980.0,
@@ -516,7 +516,7 @@ const vehicle19: Vehicle = {
   },
   attributes: {
     range: 665.0,
-    chargingSpeed: 1030.0,
+    chargingTime: 1030.0,
     price: 91000.0,
     motorPower: 597.0,
     weight: 2435.0,
@@ -545,7 +545,7 @@ const vehicle20: Vehicle = {
   },
   attributes: {
     range: 533.0,
-    chargingSpeed: 850.0,
+    chargingTime: 850.0,
     price: 52990.0,
     motorPower: 378.0,
     weight: 2003.0,
@@ -574,7 +574,7 @@ const vehicle21: Vehicle = {
   },
   attributes: {
     range: 415.0,
-    chargingSpeed: 490.0,
+    chargingTime: 490.0,
     price: 55900.0,
     motorPower: 140.0,
     weight: 2105.0,
@@ -603,7 +603,7 @@ const vehicle22: Vehicle = {
   },
   attributes: {
     range: 420.0,
-    chargingSpeed: 500.0,
+    chargingTime: 500.0,
     price: 49900.0,
     motorPower: 140.0,
     weight: 2055.0,
@@ -632,7 +632,7 @@ const vehicle23: Vehicle = {
   },
   attributes: {
     range: 690.0,
-    chargingSpeed: 870.0,
+    chargingTime: 870.0,
     price: 141900.0,
     motorPower: 265.0,
     weight: 2515.0,
@@ -659,7 +659,7 @@ const vehicle24: Vehicle = {
   },
   attributes: {
     range: 360.0,
-    chargingSpeed: 630.0,
+    chargingTime: 630.0,
     price: 29990.0,
     motorPower: 150.0,
     weight: 1726.0,
@@ -688,7 +688,7 @@ const vehicle25: Vehicle = {
   },
   attributes: {
     range: 180.0,
-    chargingSpeed: 260.0,
+    chargingTime: 260.0,
     price: 40600.0,
     motorPower: 135.0,
     weight: 1440.0,
@@ -715,7 +715,7 @@ const vehicle26: Vehicle = {
   },
   attributes: {
     range: 320.0,
-    chargingSpeed: 510.0,
+    chargingTime: 510.0,
     price: 39300.0,
     motorPower: 115.0,
     weight: 1736.0,
@@ -744,7 +744,7 @@ const vehicle27: Vehicle = {
   },
   attributes: {
     range: 500.0,
-    chargingSpeed: 650.0,
+    chargingTime: 650.0,
     price: 45300.0,
     motorPower: 170.0,
     weight: 2241.0,
@@ -773,7 +773,7 @@ const vehicle28: Vehicle = {
   },
   attributes: {
     range: 485.0,
-    chargingSpeed: 650.0,
+    chargingTime: 650.0,
     price: 70900.0,
     motorPower: 400.0,
     weight: 2430.0,
@@ -802,7 +802,7 @@ const vehicle29: Vehicle = {
   },
   attributes: {
     range: 475.0,
-    chargingSpeed: 710.0,
+    chargingTime: 710.0,
     price: 57900.0,
     motorPower: 220.0,
     weight: 2075.0,
@@ -858,7 +858,7 @@ const vehicle31: Vehicle = {
   },
   attributes: {
     range: 450.0,
-    chargingSpeed: 670.0,
+    chargingTime: 670.0,
     price: 36300.0,
     motorPower: 210.0,
     weight: 2119.0,
@@ -885,7 +885,7 @@ const vehicle32: Vehicle = {
   },
   attributes: {
     range: 450.0,
-    chargingSpeed: 670.0,
+    chargingTime: 670.0,
     price: 60800.0,
     motorPower: 210.0,
     weight: 2137.0,
@@ -912,7 +912,7 @@ const vehicle33: Vehicle = {
   },
   attributes: {
     range: 350.0,
-    chargingSpeed: 610.0,
+    chargingTime: 610.0,
     price: 43980.0,
     motorPower: 220.0,
     weight: 1984.0,
@@ -941,7 +941,7 @@ const vehicle34: Vehicle = {
   },
   attributes: {
     range: 525.0,
-    chargingSpeed: 810.0,
+    chargingTime: 810.0,
     price: 49980.0,
     motorPower: 366.0,
     weight: 1899.0,
@@ -968,7 +968,7 @@ const vehicle35: Vehicle = {
   },
   attributes: {
     range: 525.0,
-    chargingSpeed: 840.0,
+    chargingTime: 840.0,
     price: 65000.0,
     motorPower: 210.0,
     weight: 2230.0,
@@ -995,7 +995,7 @@ const vehicle36: Vehicle = {
   },
   attributes: {
     range: 445.0,
-    chargingSpeed: 660.0,
+    chargingTime: 660.0,
     price: 50400.0,
     motorPower: 210.0,
     weight: 2156.0,
@@ -1024,7 +1024,7 @@ const vehicle37: Vehicle = {
   },
   attributes: {
     range: 520.0,
-    chargingSpeed: 840.0,
+    chargingTime: 840.0,
     price: 65800.0,
     motorPower: 210.0,
     weight: 2239.0,
@@ -1051,7 +1051,7 @@ const vehicle38: Vehicle = {
   },
   attributes: {
     range: 460.0,
-    chargingSpeed: 740.0,
+    chargingTime: 740.0,
     price: 48200.0,
     motorPower: 210.0,
     weight: 1985.0,
@@ -1080,7 +1080,7 @@ const vehicle39: Vehicle = {
   },
   attributes: {
     range: 360.0,
-    chargingSpeed: 600.0,
+    chargingTime: 600.0,
     price: 42900.0,
     motorPower: 200.0,
     weight: 1850.0,
@@ -1106,7 +1106,7 @@ const vehicle40: Vehicle = {
   },
   attributes: {
     range: 500.0,
-    chargingSpeed: 466.0,
+    chargingTime: 466.0,
     price: 69000.0,
     motorPower: 360.0,
     weight: 2190.0,
