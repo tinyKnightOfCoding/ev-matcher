@@ -161,7 +161,7 @@ function VehicleCard({
           <StatCard
             icon={Banknote}
             label="Price"
-            value={`€${match.vehicle.attributes.price.toLocaleString()}`}
+            value={`${match.vehicle.attributes.price.toLocaleString()} Fr.`}
           />
         </CardContent>
         <CardFooter className="flex justify-center">
