@@ -11,40 +11,9 @@ import { CurrentQuestion } from "@/components/current-question";
 import { ProgressBar } from "@/components/progress-bar";
 import { matchVehicles } from "../actions/matchVehicles";
 import { Header } from "@/components/header";
+import { UserResponseSchema } from "../types/vehicle";
 
-const DailyUsage = z.enum([
-  "shortCityTrips",
-  "commuting",
-  "mixedUse",
-  "longTrips",
-]);
-const Passengers = z.enum([
-  "alone",
-  "withOnePerson",
-  "smallFamily",
-  "largeFamily",
-]);
-const LongDistanceFrequency = z.enum(["never", "fewTimesPerYear", "regularly"]);
-const LuggageSpace = z.enum(["small", "medium", "large"]);
-const Residence = z.enum(["city", "suburb", "rural"]);
-const EcoPreference = z.enum([
-  "veryImportant",
-  "somewhatImportant",
-  "notImportant",
-]);
-const UsageFrequency = z.enum(["rarely", "regularly", "daily"]);
-const ChargingOption = z.enum(["privateGarage", "streetAccess", "noAccess"]);
-
-const formSchema = z.object({
-  dailyUsage: DailyUsage,
-  passengers: Passengers,
-  longDistanceFrequency: LongDistanceFrequency,
-  luggageSpace: LuggageSpace,
-  residence: Residence,
-  ecoPreference: EcoPreference,
-  usageFrequency: UsageFrequency,
-  chargingOption: ChargingOption,
-});
+const formSchema = UserResponseSchema;
 
 type FormData = z.infer<typeof formSchema>;
 const questions: {
@@ -87,14 +56,6 @@ const questions: {
       { value: "large", label: "Gross" },
     ],
   },
-  residence: {
-    question: "Wo wohnst du?",
-    options: [
-      { value: "city", label: "Stadt" },
-      { value: "suburb", label: "Vorort" },
-      { value: "rural", label: "Ländlich" },
-    ],
-  },
   ecoPreference: {
     question: "Wie wichtig ist dir Umweltfreundlichkeit?",
     options: [
@@ -103,20 +64,21 @@ const questions: {
       { value: "notImportant", label: "Nicht wichtig" },
     ],
   },
-  usageFrequency: {
-    question: "Wie oft benutzt du das Fahrzeug?",
+  sportiness: {
+    question:
+      "Wie viel Wert legst du auf sportliche Fahrleistung und schnelle Beschleunigung?",
     options: [
-      { value: "rarely", label: "Selten" },
-      { value: "regularly", label: "Regelmässig" },
-      { value: "daily", label: "Täglich" },
+      { value: "very_important", label: "Sehr wichtig" },
+      { value: "important", label: "Ziemlich wichtig" },
+      { value: "not_important", label: "Nicht wichtig" },
     ],
   },
-  chargingOption: {
-    question: "Welche Lademöglichkeit steht dir zur Verfügung?",
+  budget: {
+    question: "Wie hoch ist dein Budget?",
     options: [
-      { value: "privateGarage", label: "In der privaten Garage" },
-      { value: "streetAccess", label: "An der Strasse" },
-      { value: "noAccess", label: "Kein privater Zugang" },
+      { value: "low", label: "Tief" },
+      { value: "medium", label: "Mittel" },
+      { value: "high", label: "Hoch" },
     ],
   },
 };
@@ -167,6 +129,7 @@ export default function QuestionnairePage() {
       Object.entries(form.getValues()).forEach(([key, value]) => {
         formData.append(key, value);
       });
+      console.log(formData);
 
       const matchingResults = await matchVehicles(formData);
       const userResponses = form.getValues();

@@ -5,8 +5,10 @@ import {
   type Vehicle,
   type MatchingResult,
   UserResponseSchema,
+  Sportiness,
 } from "../types/vehicle";
 import { vehicles } from "../data/vehicles";
+import { z } from "zod";
 
 type DailyUsage = "shortCityTrips" | "commuting" | "mixedUse" | "longTrips";
 type Passengers = "alone" | "withOnePerson" | "smallFamily" | "largeFamily";
@@ -117,27 +119,52 @@ function calculateMatchingScore(
 
   // 7. Acceleration (Beschleunigung)
   const accelerationSweetSpots: {
-    [key in DailyUsage]: Tuple;
+    [key in z.infer<typeof Sportiness>]: Tuple;
   } = {
-    shortCityTrips: [5, 8, 10, 12, 15],
-    commuting: [4, 7, 8, 10, 13],
-    mixedUse: [3, 6, 7, 9, 12],
-    longTrips: [2, 5, 6, 8, 10],
+    very_important: [1, 2, 3, 4, 5],
+    important: [2, 4, 6, 8, 10],
+    not_important: [8, 10, 12, 14, 16],
   };
+
   attributeScores.acceleration = sweetSpotScore(
     vehicle.attributes.acceleration,
-    accelerationSweetSpots[user.dailyUsage],
+    accelerationSweetSpots[user.sportiness],
   );
 
-  // 8. Charging Time (Ladezeit)
-  const chargingTimeSweetSpot: Tuple =
-    user.chargingOption === "noAccess"
-      ? [5, 10, 20, 30, 40]
-      : [10, 20, 40, 50, 60];
+  const chargingTimeSweetSpots: {
+    [key in DailyUsage]: Tuple;
+  } = {
+    shortCityTrips: [200, 250, 300, 400, 600],
+    commuting: [200, 250, 300, 400, 600],
+    mixedUse: [200, 400, 600, 600, 800],
+    longTrips: [800, 1000, 1200, 1400, 1600],
+  };
+
   attributeScores.chargingTime = sweetSpotScore(
     vehicle.attributes.chargingTime,
-    chargingTimeSweetSpot,
+    chargingTimeSweetSpots[user.dailyUsage],
   );
+
+  switch (user.budget) {
+    case "low":
+      attributeScores.price = sweetSpotScore(
+        vehicle.attributes.price,
+        [0, 10_000, 14_000, 22_500, 30_000],
+      );
+      break;
+    case "medium":
+      attributeScores.price = sweetSpotScore(
+        vehicle.attributes.price,
+        [25_000, 35_000, 50_000, 65_000, 75_000],
+      );
+      break;
+    case "high":
+      attributeScores.price = sweetSpotScore(
+        vehicle.attributes.price,
+        [75, 90_000, 140_000, 175_000, 200_000],
+      );
+      break;
+  }
 
   // Compute total score as the average of attribute scores
   const totalScore =

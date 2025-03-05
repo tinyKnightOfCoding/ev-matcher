@@ -32,15 +32,22 @@ export const ChargingOption = z.enum([
   "noAccess",
 ]);
 
+export const Sportiness = z.enum([
+  "very_important",
+  "important",
+  "not_important",
+]);
+
+export const Budget = z.enum(["low", "medium", "high"]);
+
 export const UserResponseSchema = z.object({
   dailyUsage: DailyUsage,
   passengers: Passengers,
   longDistanceFrequency: LongDistanceFrequency,
   luggageSpace: LuggageSpace,
-  residence: Residence,
   ecoPreference: EcoPreference,
-  usageFrequency: UsageFrequency,
-  chargingOption: ChargingOption,
+  sportiness: Sportiness,
+  budget: Budget,
 });
 
 // VehicleDescription Schema
