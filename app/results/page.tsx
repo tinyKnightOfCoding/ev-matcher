@@ -35,6 +35,7 @@ import {
 } from "recharts";
 import { Header } from "@/components/header";
 import { LearnMoreDialog } from "@/components/learn-more-dialog";
+import { Vehicle } from "../types/vehicle";
 
 const container = {
   hidden: { opacity: 0 },
@@ -155,8 +156,8 @@ function VehicleCard({
           />
           <StatCard
             icon={Timer}
-            label="Charging (0-80%)"
-            value={`${match.vehicle.attributes.chargingTime}min`}
+            label="Charging (10%-80%)"
+            value={`${chargingSpeed10To80(match.vehicle)}min`}
           />
           <StatCard
             icon={Banknote}
@@ -177,6 +178,13 @@ function VehicleCard({
       </Card>
     </motion.div>
   );
+}
+
+function chargingSpeed10To80(vehicle: Vehicle): number {
+  const chargingTimeInKmPerHours = vehicle.attributes.chargingTime;
+  const rangeInKm = vehicle.attributes.range;
+  const chargingSpeed = (rangeInKm / chargingTimeInKmPerHours) * 0.7 * 60;
+  return Math.round(chargingSpeed);
 }
 
 function Results() {
